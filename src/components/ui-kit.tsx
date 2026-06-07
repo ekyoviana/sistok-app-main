@@ -105,6 +105,6 @@ export function TableShell({ children }: { children: ReactNode }) {
 export function Th({ children, className }: { children: ReactNode; className?: string }) {
   return <th className={cn("text-left font-semibold text-xs uppercase tracking-wide text-muted-foreground px-4 py-3 bg-muted/40", className)}>{children}</th>;
 }
-export function Td({ children, className }: { children: ReactNode; className?: string }) {
-  return <td className={cn("px-4 py-3 border-t", className)}>{children}</td>;
+export function Td({ children, className, colSpan }: { children?: ReactNode; className?: string; colSpan?: number }) {
+  return <td colSpan={colSpan} className={cn("px-4 py-3 border-t", className)}>{children}</td>;
 }
