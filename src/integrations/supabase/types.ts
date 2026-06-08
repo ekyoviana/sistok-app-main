@@ -280,6 +280,8 @@ export type Database = {
         }
         Returns: string
       }
+      fn_hapus_barang_keluar: { Args: { p_id: string }; Returns: undefined }
+      fn_hapus_barang_masuk: { Args: { p_id: string }; Returns: undefined }
       fn_penyesuaian: {
         Args: {
           p_jenis: string
