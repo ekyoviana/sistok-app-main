@@ -2,15 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth-context";
 import { PageHeader, Card, Button, Input, Select, Label, TableShell, Th, Td } from "@/components/ui-kit";
 import { fmtDateTime, fmtIDR } from "@/lib/format";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/outgoing")({ component: Outgoing });
 
 function Outgoing() {
   const { t } = useI18n();
+  const { role } = useAuth();
   const qc = useQueryClient();
   const [form, setForm] = useState({ product_id: "", jumlah: 1, jenis_keluar: "penjualan", tanggal_keluar: new Date().toISOString().slice(0,16) });
   const [scan, setScan] = useState("");
