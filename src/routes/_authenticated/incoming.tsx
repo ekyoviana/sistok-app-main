@@ -2,15 +2,18 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
+import { useAuth } from "@/lib/auth-context";
 import { PageHeader, Card, Button, Input, Select, Label, TableShell, Th, Td } from "@/components/ui-kit";
 import { fmtDateTime, fmtIDR } from "@/lib/format";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Trash2 } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/incoming")({ component: Incoming });
 
 function Incoming() {
   const { t } = useI18n();
+  const { role } = useAuth();
   const qc = useQueryClient();
   const [form, setForm] = useState({ product_id: "", jumlah: 1, harga_beli: 0, supplier: "", tanggal_masuk: new Date().toISOString().slice(0,16) });
   const [scan, setScan] = useState("");
@@ -31,6 +34,15 @@ function Incoming() {
       setForm({ product_id: "", jumlah: 1, harga_beli: 0, supplier: "", tanggal_masuk: new Date().toISOString().slice(0,16) });
       qc.invalidateQueries();
     },
+    onError: (e: any) => toast.error(e.message),
+  });
+
+  const del = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc("fn_hapus_barang_masuk", { p_id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => { toast.success("Transaksi dihapus"); qc.invalidateQueries(); },
     onError: (e: any) => toast.error(e.message),
   });
 
@@ -66,9 +78,9 @@ function Incoming() {
       </Card>
 
       <TableShell>
-        <thead><tr><Th>{t("date")}</Th><Th>{t("name")}</Th><Th>{t("quantity")}</Th><Th>{t("buy_price")}</Th><Th>{t("supplier")}</Th></tr></thead>
+        <thead><tr><Th>{t("date")}</Th><Th>{t("name")}</Th><Th>{t("quantity")}</Th><Th>{t("buy_price")}</Th><Th>{t("supplier")}</Th><Th className="text-right">{t("actions")}</Th></tr></thead>
         <tbody>
-          {rows.length === 0 && <tr><Td colSpan={5} className="text-center text-muted-foreground py-8">{t("no_data")}</Td></tr>}
+          {rows.length === 0 && <tr><Td colSpan={6} className="text-center text-muted-foreground py-8">{t("no_data")}</Td></tr>}
           {rows.map((r: any) => (
             <tr key={r.id}>
               <Td>{fmtDateTime(r.tanggal_masuk)}</Td>
@@ -76,6 +88,13 @@ function Incoming() {
               <Td className="tabular-nums">+{r.jumlah}</Td>
               <Td className="tabular-nums">{fmtIDR(r.harga_beli)}</Td>
               <Td>{r.supplier || "-"}</Td>
+              <Td className="text-right">
+                {role === "admin" ? (
+                  <Button variant="ghost" className="h-8 px-2 text-destructive hover:bg-destructive/10" onClick={() => { if (confirm("Hapus transaksi ini? Hanya batch yang belum terpakai yang dapat dihapus.")) del.mutate(r.id); }}>
+                    <Trash2 className="size-4" />
+                  </Button>
+                ) : <span className="text-xs text-muted-foreground">—</span>}
+              </Td>
             </tr>
           ))}
         </tbody>

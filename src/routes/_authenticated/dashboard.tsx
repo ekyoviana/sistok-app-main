@@ -1,10 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useI18n } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
 import { PageHeader, StatCard, Card, Badge, TableShell, Th, Td } from "@/components/ui-kit";
-import { Package, Boxes, AlertTriangle, CalendarClock, Receipt } from "lucide-react";
+import { Package, Boxes, AlertTriangle, CalendarClock, Receipt, ArrowRight } from "lucide-react";
 import { fmtIDR, fmtDate, fmtDateTime, expiryStatus } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({ component: Dashboard });
@@ -68,6 +68,9 @@ function Dashboard() {
               ))}
             </div>
           )}
+          <Link to="/outgoing" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            Lihat selengkapnya <ArrowRight className="size-3.5" />
+          </Link>
         </Card>
 
         <Card className="p-5">
@@ -91,6 +94,9 @@ function Dashboard() {
               ))}
             </div>
           )}
+          <Link to="/stock" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            Lihat selengkapnya <ArrowRight className="size-3.5" />
+          </Link>
         </Card>
       </div>
 
