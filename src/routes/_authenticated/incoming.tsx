@@ -37,6 +37,15 @@ function Incoming() {
     onError: (e: any) => toast.error(e.message),
   });
 
+  const del = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.rpc("fn_hapus_barang_masuk", { p_id: id });
+      if (error) throw error;
+    },
+    onSuccess: () => { toast.success("Transaksi dihapus"); qc.invalidateQueries(); },
+    onError: (e: any) => toast.error(e.message),
+  });
+
   const handleScan = () => {
     const p = products.find((x: any) => x.barcode === scan || x.kode_barang === scan);
     if (p) { setForm(f => ({ ...f, product_id: p.id })); toast.success(p.nama_barang); }
