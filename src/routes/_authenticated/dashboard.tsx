@@ -68,6 +68,9 @@ function Dashboard() {
               ))}
             </div>
           )}
+          <Link to="/outgoing" className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline">
+            Lihat selengkapnya <ArrowRight className="size-3.5" />
+          </Link>
         </Card>
 
         <Card className="p-5">
