@@ -13,6 +13,7 @@ export const Route = createFileRoute("/_authenticated/incoming")({ component: In
 
 function Incoming() {
   const { t } = useI18n();
+  const { role } = useAuth();
   const qc = useQueryClient();
   const [form, setForm] = useState({ product_id: "", jumlah: 1, harga_beli: 0, supplier: "", tanggal_masuk: new Date().toISOString().slice(0,16) });
   const [scan, setScan] = useState("");
