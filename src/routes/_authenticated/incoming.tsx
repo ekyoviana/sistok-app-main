@@ -78,9 +78,9 @@ function Incoming() {
       </Card>
 
       <TableShell>
-        <thead><tr><Th>{t("date")}</Th><Th>{t("name")}</Th><Th>{t("quantity")}</Th><Th>{t("buy_price")}</Th><Th>{t("supplier")}</Th></tr></thead>
+        <thead><tr><Th>{t("date")}</Th><Th>{t("name")}</Th><Th>{t("quantity")}</Th><Th>{t("buy_price")}</Th><Th>{t("supplier")}</Th><Th className="text-right">{t("actions")}</Th></tr></thead>
         <tbody>
-          {rows.length === 0 && <tr><Td colSpan={5} className="text-center text-muted-foreground py-8">{t("no_data")}</Td></tr>}
+          {rows.length === 0 && <tr><Td colSpan={6} className="text-center text-muted-foreground py-8">{t("no_data")}</Td></tr>}
           {rows.map((r: any) => (
             <tr key={r.id}>
               <Td>{fmtDateTime(r.tanggal_masuk)}</Td>
@@ -88,6 +88,13 @@ function Incoming() {
               <Td className="tabular-nums">+{r.jumlah}</Td>
               <Td className="tabular-nums">{fmtIDR(r.harga_beli)}</Td>
               <Td>{r.supplier || "-"}</Td>
+              <Td className="text-right">
+                {role === "admin" ? (
+                  <Button variant="ghost" className="h-8 px-2 text-destructive hover:bg-destructive/10" onClick={() => { if (confirm("Hapus transaksi ini? Hanya batch yang belum terpakai yang dapat dihapus.")) del.mutate(r.id); }}>
+                    <Trash2 className="size-4" />
+                  </Button>
+                ) : <span className="text-xs text-muted-foreground">—</span>}
+              </Td>
             </tr>
           ))}
         </tbody>
