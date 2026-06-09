@@ -60,7 +60,7 @@ function Reports() {
     const w = window.open("", "_blank");
     if (!w) return;
     w.document.write(
-      `<html><head><title>Laporan SIPB</title><style>body{font-family:system-ui;padding:24px}table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:12px}th{background:#f3f4f6}h1{margin:0 0 6px}p{color:#555;margin:0 0 16px}</style></head><body><h1>Laporan SIPB</h1><p>Periode: ${from} s/d ${to}</p>${html}</body></html>`,
+      `<html><head><title>Laporan SIStok</title><style>body{font-family:system-ui;padding:24px}table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:12px}th{background:#f3f4f6}h1{margin:0 0 6px}p{color:#555;margin:0 0 16px}</style></head><body><h1>Laporan SIStok</h1><p>Periode: ${from} s/d ${to}</p>${html}</body></html>`,
     );
     w.document.close();
     w.focus();
