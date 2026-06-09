@@ -111,6 +111,8 @@ function Outgoing() {
           ))}
         </tbody>
       </TableShell>
+      <BarcodeScanner open={scanOpen} onClose={() => setScanOpen(false)} onDetected={(code) => handleScan(code)} />
     </div>
+
   );
 }
