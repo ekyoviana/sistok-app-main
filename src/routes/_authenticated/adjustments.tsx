@@ -29,7 +29,7 @@ function Adj() {
 
   return (
     <div>
-      <PageHeader title={t("adjustments")} subtitle="Gunakan angka negatif untuk pengurangan stok" />
+      <PageHeader title={t("adjustments")} subtitle={t("adjustments_subtitle")} />
 
       <Card className="p-5 mb-6">
         <form onSubmit={e => { e.preventDefault(); mut.mutate(); }} className="grid grid-cols-1 md:grid-cols-2 gap-3">

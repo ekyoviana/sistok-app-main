@@ -17,7 +17,7 @@ function Stock() {
 
   return (
     <div>
-      <PageHeader title={t("stock")} subtitle="Snapshot stok saat ini" />
+      <PageHeader title={t("stock")} subtitle={t("stock_subtitle")} />
       <Card className="p-3 mb-4">
         <div className="relative">
           <Search className="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />

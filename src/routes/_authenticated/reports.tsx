@@ -84,7 +84,7 @@ function Reports() {
         <StatCard label={t("total_stock")} value={totalStock} accent="success" icon={<Boxes className="size-5" />} />
         <StatCard label={t("low_stock")} value={lowStock.length} accent="destructive" icon={<AlertTriangle className="size-5" />} />
         <StatCard label={t("expiring")} value={expiring.length} accent="warning" icon={<CalendarClock className="size-5" />} />
-        <StatCard label="Nilai Stok" value={fmtIDR(stockValue)} accent="primary" icon={<Receipt className="size-5" />} />
+        <StatCard label={t("stock_value")} value={fmtIDR(stockValue)} accent="primary" icon={<Receipt className="size-5" />} />
       </div>
 
       <Card className="p-4 mb-4 grid grid-cols-1 md:grid-cols-4 gap-3">
@@ -118,7 +118,7 @@ function Reports() {
       <div id="report-content">
         {type === "stock" && (
           <TableShell>
-            <thead><tr><Th>{t("code")}</Th><Th>{t("name")}</Th><Th>{t("category")}</Th><Th>{t("stock_qty")}</Th><Th>{t("price")}</Th><Th>Nilai</Th></tr></thead>
+            <thead><tr><Th>{t("code")}</Th><Th>{t("name")}</Th><Th>{t("category")}</Th><Th>{t("stock_qty")}</Th><Th>{t("price")}</Th><Th>{t("value")}</Th></tr></thead>
             <tbody>
               {products.map((p: any) => (
                 <tr key={p.id}>
@@ -132,7 +132,7 @@ function Reports() {
         )}
         {type === "in" && (
           <TableShell>
-            <thead><tr><Th>{t("date")}</Th><Th>{t("name")}</Th><Th>{t("quantity")}</Th><Th>{t("buy_price")}</Th><Th>Total</Th><Th>{t("supplier")}</Th></tr></thead>
+            <thead><tr><Th>{t("date")}</Th><Th>{t("name")}</Th><Th>{t("quantity")}</Th><Th>{t("buy_price")}</Th><Th>{t("value")}</Th><Th>{t("supplier")}</Th></tr></thead>
             <tbody>
               {(inQ.data ?? []).length === 0 && <tr><Td colSpan={6} className="text-center text-muted-foreground py-8">{t("no_data")}</Td></tr>}
               {inQ.data?.map((r: any) => (
