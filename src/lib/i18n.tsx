@@ -160,7 +160,15 @@ const dict = {
     hpp: "COGS",
     select_product: "Select product",
     summary: "Summary",
+    view_more: "View more",
+    incoming_subtitle: "FIFO batches auto-recorded",
+    outgoing_subtitle: "COGS calculated automatically with FIFO",
+    adjustments_subtitle: "Use negative numbers to reduce stock",
+    stock_subtitle: "Current stock snapshot",
+    stock_value: "Stock Value",
+    value: "Value",
   },
+
 } as const;
 
 type Lang = keyof typeof dict;
