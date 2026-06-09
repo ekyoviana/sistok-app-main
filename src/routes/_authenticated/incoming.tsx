@@ -7,7 +7,9 @@ import { PageHeader, Card, Button, Input, Select, Label, TableShell, Th, Td } fr
 import { fmtDateTime, fmtIDR } from "@/lib/format";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Trash2 } from "lucide-react";
+import { Trash2, ScanLine } from "lucide-react";
+import { BarcodeScanner } from "@/components/BarcodeScanner";
+
 
 export const Route = createFileRoute("/_authenticated/incoming")({ component: Incoming });
 
@@ -17,6 +19,8 @@ function Incoming() {
   const qc = useQueryClient();
   const [form, setForm] = useState({ product_id: "", jumlah: 1, harga_beli: 0, supplier: "", tanggal_masuk: new Date().toISOString().slice(0,16) });
   const [scan, setScan] = useState("");
+  const [scanOpen, setScanOpen] = useState(false);
+
 
   const { data: products = [] } = useQuery({ queryKey: ["products-sel"], queryFn: async () => (await supabase.from("products").select("id,kode_barang,nama_barang,barcode").order("nama_barang")).data ?? [] });
   const { data: rows = [] } = useQuery({ queryKey: ["incoming"], queryFn: async () => (await supabase.from("incoming_goods").select("*, products(nama_barang, kode_barang)").order("tanggal_masuk", { ascending: false }).limit(50)).data ?? [] });
@@ -46,8 +50,10 @@ function Incoming() {
     onError: (e: any) => toast.error(e.message),
   });
 
-  const handleScan = () => {
-    const p = products.find((x: any) => x.barcode === scan || x.kode_barang === scan);
+  const handleScan = (code?: string) => {
+    const value = (code ?? scan).trim();
+    if (!value) return;
+    const p = products.find((x: any) => x.barcode === value || x.kode_barang === value);
     if (p) { setForm(f => ({ ...f, product_id: p.id })); toast.success(p.nama_barang); }
     else toast.error("Barcode tidak ditemukan");
     setScan("");
@@ -55,14 +61,17 @@ function Incoming() {
 
   return (
     <div>
-      <PageHeader title={t("incoming")} subtitle="FIFO batch otomatis tercatat" />
+      <PageHeader title={t("incoming")} subtitle={t("incoming_subtitle")} />
+
 
       <Card className="p-5 mb-6">
         <form onSubmit={e => { e.preventDefault(); mut.mutate(); }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           <div className="lg:col-span-3 flex gap-2">
             <Input placeholder="Scan / input barcode" value={scan} onChange={e => setScan(e.target.value)} onKeyDown={e => e.key === "Enter" && (e.preventDefault(), handleScan())} />
-            <Button type="button" variant="outline" onClick={handleScan}>Scan</Button>
+            <Button type="button" variant="outline" onClick={() => handleScan()}>Cek</Button>
+            <Button type="button" variant="outline" onClick={() => setScanOpen(true)}><ScanLine className="size-4" /> Scan</Button>
           </div>
+
           <div><Label>{t("select_product")}</Label>
             <Select required value={form.product_id} onChange={e => setForm({ ...form, product_id: e.target.value })}>
               <option value="">—</option>
