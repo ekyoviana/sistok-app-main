@@ -3,7 +3,6 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 const dict = {
   id: {
     app_name: "SIStok",
-    app_tagline: "Sistem Pengelolaan Stok",
     login: "Masuk",
 
     logout: "Keluar",
@@ -83,11 +82,34 @@ const dict = {
     stock_subtitle: "Snapshot stok saat ini",
     stock_value: "Nilai Stok",
     value: "Nilai",
+    check: "Cek",
+    scan: "Scan",
+    scan_barcode: "Scan Barcode",
+    scan_input_barcode: "Scan / input barcode",
+    aim_camera: "Arahkan kamera ke barcode produk",
+    barcode_not_found: "Barcode tidak ditemukan",
+    pick_product_first: "Pilih barang terlebih dahulu",
+    available: "Tersedia",
+    transaction_deleted: "Transaksi dihapus",
+    confirm_delete_incoming: "Hapus transaksi ini? Hanya batch yang belum terpakai yang dapat dihapus.",
+    confirm_delete_outgoing: "Hapus transaksi ini? Stok akan dikembalikan ke batch terbaru.",
+    reset: "Reset",
+    showing: "Menampilkan",
+    transactions: "transaksi",
+    period: "Periode",
+    low: "Rendah",
+    report_title: "Laporan SIStok",
+    products_count_suffix: "barang",
+    adj_correction: "Koreksi",
+    adj_damage: "Kerusakan",
+    adj_loss: "Kehilangan",
+    adj_diff: "Selisih",
+    type_sale: "Penjualan",
+    type_internal: "Internal",
   },
 
   en: {
     app_name: "SIStok",
-    app_tagline: "Stock Management System",
     login: "Sign In",
 
     logout: "Sign Out",
@@ -167,12 +189,39 @@ const dict = {
     stock_subtitle: "Current stock snapshot",
     stock_value: "Stock Value",
     value: "Value",
+    check: "Check",
+    scan: "Scan",
+    scan_barcode: "Scan Barcode",
+    scan_input_barcode: "Scan / enter barcode",
+    aim_camera: "Point the camera at the product barcode",
+    barcode_not_found: "Barcode not found",
+    pick_product_first: "Please pick a product first",
+    available: "Available",
+    transaction_deleted: "Transaction deleted",
+    confirm_delete_incoming: "Delete this transaction? Only untouched batches can be removed.",
+    confirm_delete_outgoing: "Delete this transaction? Stock will be returned to the latest batch.",
+    reset: "Reset",
+    showing: "Showing",
+    transactions: "transactions",
+    period: "Period",
+    low: "Low",
+    report_title: "SIStok Report",
+    products_count_suffix: "items",
+    adj_correction: "Correction",
+    adj_damage: "Damage",
+    adj_loss: "Loss",
+    adj_diff: "Difference",
+    type_sale: "Sale",
+    type_internal: "Internal",
   },
 
 } as const;
 
 type Lang = keyof typeof dict;
 type Key = keyof typeof dict["id"];
+
+// Tagline tetap dalam Bahasa Indonesia (tidak ikut diterjemahkan).
+export const APP_TAGLINE = "Sistem Pengelolaan Stok";
 
 const I18nCtx = createContext<{ lang: Lang; t: (k: Key) => string; setLang: (l: Lang) => void }>({
   lang: "id",

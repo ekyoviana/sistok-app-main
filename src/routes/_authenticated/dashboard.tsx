@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, APP_TAGLINE } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
 import { PageHeader, StatCard, Card, Badge, TableShell, Th, Td } from "@/components/ui-kit";
 import { Package, Boxes, AlertTriangle, CalendarClock, Receipt, ArrowRight } from "lucide-react";
@@ -36,7 +36,7 @@ function Dashboard() {
 
   return (
     <div>
-      <PageHeader title={`${t("welcome")}, ${nama || "User"} 👋`} subtitle={t("app_tagline")} />
+      <PageHeader title={`${t("welcome")}, ${nama || "User"} 👋`} subtitle={APP_TAGLINE} />
 
       <div className="grid grid-cols-2 lg:grid-cols-5 gap-3 lg:gap-4">
         <StatCard label={t("total_products")} value={products.length} icon={<Package className="size-5" />} />
