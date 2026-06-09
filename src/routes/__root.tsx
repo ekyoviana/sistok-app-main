@@ -42,8 +42,16 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "SIPB — Sistem Informasi Persediaan Barang" },
-      { name: "description", content: "Aplikasi pengelolaan stok barang gudang & toko dengan metode FIFO." },
+      { title: "SIStok — Sistem Pengelolaan Stok" },
+      { name: "description", content: "Aplikasi Stok Barang untuk Meningkatkan Efisiensi Pengelolaan Persediaan UMKM." },
+      { property: "og:title", content: "SIStok — Sistem Pengelolaan Stok" },
+      { name: "twitter:title", content: "SIStok — Sistem Pengelolaan Stok" },
+      { property: "og:description", content: "Aplikasi Stok Barang untuk Meningkatkan Efisiensi Pengelolaan Persediaan UMKM." },
+      { name: "twitter:description", content: "Aplikasi Stok Barang untuk Meningkatkan Efisiensi Pengelolaan Persediaan UMKM." },
+      { property: "og:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/79838473-a802-4bec-8830-f6b834c99f0a" },
+      { name: "twitter:image", content: "https://storage.googleapis.com/gpt-engineer-file-uploads/attachments/og-images/79838473-a802-4bec-8830-f6b834c99f0a" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:type", content: "website" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
