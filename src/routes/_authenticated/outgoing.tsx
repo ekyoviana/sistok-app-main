@@ -64,7 +64,9 @@ function Outgoing() {
         <form onSubmit={e => { e.preventDefault(); mut.mutate(); }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           <div className="lg:col-span-3 flex gap-2">
             <Input placeholder="Scan / input barcode" value={scan} onChange={e => setScan(e.target.value)} onKeyDown={e => e.key === "Enter" && (e.preventDefault(), handleScan())} />
-            <Button type="button" variant="outline" onClick={handleScan}>Scan</Button>
+            <Button type="button" variant="outline" onClick={() => handleScan()}>Cek</Button>
+            <Button type="button" variant="outline" onClick={() => setScanOpen(true)}><ScanLine className="size-4" /> Scan</Button>
+
           </div>
           <div><Label>{t("select_product")}</Label>
             <Select required value={form.product_id} onChange={e => setForm({ ...form, product_id: e.target.value })}>
