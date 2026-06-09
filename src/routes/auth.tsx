@@ -92,21 +92,6 @@ function AuthPage() {
             {loading ? "..." : t("login_btn")}
           </button>
 
-          <div className="rounded-xl border bg-muted/40 p-3 space-y-1.5">
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Akun Demo</div>
-            {[
-              { e: "admin@demo.com", r: t("role_admin") },
-              { e: "gudang@demo.com", r: t("role_gudang") },
-              { e: "kasir@demo.com", r: t("role_kasir") },
-            ].map(d => (
-              <button type="button" key={d.e} onClick={() => fillDemo(d.e)}
-                className="w-full text-left text-xs flex items-center justify-between px-2 py-1.5 rounded hover:bg-background transition">
-                <span className="font-mono">{d.e}</span>
-                <span className="text-muted-foreground">{d.r}</span>
-              </button>
-            ))}
-            <div className="text-[11px] text-muted-foreground pt-1">Password: <span className="font-mono">demo1234</span></div>
-          </div>
         </form>
       </div>
     </div>
