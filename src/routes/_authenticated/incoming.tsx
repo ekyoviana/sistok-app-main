@@ -27,7 +27,7 @@ function Incoming() {
 
   const mut = useMutation({
     mutationFn: async () => {
-      if (!form.product_id) throw new Error("Pilih barang");
+      if (!form.product_id) throw new Error(t("pick_product_first"));
       const { error } = await supabase.rpc("fn_barang_masuk", {
         p_product_id: form.product_id, p_jumlah: form.jumlah, p_harga: form.harga_beli, p_supplier: form.supplier, p_tanggal: new Date(form.tanggal_masuk).toISOString(),
       });
@@ -46,7 +46,7 @@ function Incoming() {
       const { error } = await supabase.rpc("fn_hapus_barang_masuk", { p_id: id });
       if (error) throw error;
     },
-    onSuccess: () => { toast.success("Transaksi dihapus"); qc.invalidateQueries(); },
+    onSuccess: () => { toast.success(t("transaction_deleted")); qc.invalidateQueries(); },
     onError: (e: any) => toast.error(e.message),
   });
 
@@ -55,7 +55,7 @@ function Incoming() {
     if (!value) return;
     const p = products.find((x: any) => x.barcode === value || x.kode_barang === value);
     if (p) { setForm(f => ({ ...f, product_id: p.id })); toast.success(p.nama_barang); }
-    else toast.error("Barcode tidak ditemukan");
+    else toast.error(`${t("barcode_not_found")}: ${value}`);
     setScan("");
   };
 
@@ -67,9 +67,9 @@ function Incoming() {
       <Card className="p-5 mb-6">
         <form onSubmit={e => { e.preventDefault(); mut.mutate(); }} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
           <div className="lg:col-span-3 flex gap-2">
-            <Input placeholder="Scan / input barcode" value={scan} onChange={e => setScan(e.target.value)} onKeyDown={e => e.key === "Enter" && (e.preventDefault(), handleScan())} />
-            <Button type="button" variant="outline" onClick={() => handleScan()}>Cek</Button>
-            <Button type="button" variant="outline" onClick={() => setScanOpen(true)}><ScanLine className="size-4" /> Scan</Button>
+            <Input placeholder={t("scan_input_barcode")} value={scan} onChange={e => setScan(e.target.value)} onKeyDown={e => e.key === "Enter" && (e.preventDefault(), handleScan())} />
+            <Button type="button" variant="outline" onClick={() => handleScan()}>{t("check")}</Button>
+            <Button type="button" variant="outline" onClick={() => setScanOpen(true)}><ScanLine className="size-4" /> {t("scan")}</Button>
           </div>
 
           <div><Label>{t("select_product")}</Label>
@@ -99,7 +99,7 @@ function Incoming() {
               <Td>{r.supplier || "-"}</Td>
               <Td className="text-right">
                 {role === "admin" ? (
-                  <Button variant="ghost" className="h-8 px-2 text-destructive hover:bg-destructive/10" onClick={() => { if (confirm("Hapus transaksi ini? Hanya batch yang belum terpakai yang dapat dihapus.")) del.mutate(r.id); }}>
+                  <Button variant="ghost" className="h-8 px-2 text-destructive hover:bg-destructive/10" onClick={() => { if (confirm(t("confirm_delete_incoming"))) del.mutate(r.id); }}>
                     <Trash2 className="size-4" />
                   </Button>
                 ) : <span className="text-xs text-muted-foreground">—</span>}

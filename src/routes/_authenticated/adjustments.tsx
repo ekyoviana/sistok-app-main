@@ -19,13 +19,28 @@ function Adj() {
 
   const mut = useMutation({
     mutationFn: async () => {
-      if (!form.product_id) throw new Error("Pilih barang");
+      if (!form.product_id) throw new Error(t("pick_product_first"));
       const { error } = await supabase.rpc("fn_penyesuaian", { p_product_id: form.product_id, p_jenis: form.jenis, p_jumlah: form.jumlah, p_keterangan: form.keterangan });
       if (error) throw error;
     },
     onSuccess: () => { toast.success(t("success_saved")); setForm({ product_id: "", jenis: "kerusakan", jumlah: -1, keterangan: "" }); qc.invalidateQueries(); },
     onError: (e: any) => toast.error(e.message),
   });
+
+  const adjLabel = (j: string) => {
+    if (j === "kerusakan") return t("adj_damage");
+    if (j === "kehilangan") return t("adj_loss");
+    if (j === "selisih") return t("adj_diff");
+    if (j === "koreksi") return t("adj_correction");
+    return j;
+  };
+
+  const noteLabel = (k: string | null) => {
+    if (!k) return "-";
+    if (k === "Pembatalan barang masuk") return t("lang" as any) === "en" ? "Stock-in cancellation" : k;
+    if (k === "Pembatalan barang keluar") return t("lang" as any) === "en" ? "Stock-out cancellation" : k;
+    return k;
+  };
 
   return (
     <div>
