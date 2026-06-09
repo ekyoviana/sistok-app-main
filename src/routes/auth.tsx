@@ -2,7 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/lib/auth-context";
-import { useI18n } from "@/lib/i18n";
+import { useI18n, APP_TAGLINE } from "@/lib/i18n";
 import { Boxes, Languages } from "lucide-react";
 import { toast } from "sonner";
 
@@ -42,7 +42,7 @@ function AuthPage() {
           </div>
           <div>
             <div className="font-bold text-xl tracking-tight">{t("app_name")}</div>
-            <div className="text-xs opacity-80">{t("app_tagline")}</div>
+            <div className="text-xs opacity-80">{APP_TAGLINE}</div>
           </div>
         </div>
         <div className="relative">

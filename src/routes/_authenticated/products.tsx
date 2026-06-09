@@ -73,7 +73,7 @@ function Products() {
 
   return (
     <div>
-      <PageHeader title={t("products")} subtitle={`${products.length} ${t("products").toLowerCase()}`} actions={
+      <PageHeader title={t("products")} subtitle={`${products.length} ${t("products_count_suffix")}`} actions={
         canEdit ? <Button onClick={openAdd}><Plus className="size-4" /> {t("add")}</Button> : undefined
       } />
 
@@ -110,7 +110,7 @@ function Products() {
                 <Td>
                   <div className="flex items-center gap-2">
                     <span className="tabular-nums">{p.stok} {p.satuan}</span>
-                    {low && <Badge variant="destructive">Low</Badge>}
+                    {low && <Badge variant="destructive">{t("low")}</Badge>}
                   </div>
                 </Td>
                 <Td>

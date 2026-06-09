@@ -60,7 +60,7 @@ function Reports() {
     const w = window.open("", "_blank");
     if (!w) return;
     w.document.write(
-      `<html><head><title>Laporan SIStok</title><style>body{font-family:system-ui;padding:24px}table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:12px}th{background:#f3f4f6}h1{margin:0 0 6px}p{color:#555;margin:0 0 16px}</style></head><body><h1>Laporan SIStok</h1><p>Periode: ${from} s/d ${to}</p>${html}</body></html>`,
+      `<html><head><title>${t("report_title")}</title><style>body{font-family:system-ui;padding:24px}table{width:100%;border-collapse:collapse;margin-top:12px}th,td{border:1px solid #ddd;padding:8px;text-align:left;font-size:12px}th{background:#f3f4f6}h1{margin:0 0 6px}p{color:#555;margin:0 0 16px}</style></head><body><h1>${t("report_title")}</h1><p>${t("period")}: ${from} → ${to}</p>${html}</body></html>`,
     );
     w.document.close();
     w.focus();
@@ -105,13 +105,13 @@ function Reports() {
           <Input type="date" value={to} min={from} max={today} onChange={(e) => setTo(e.target.value)} disabled={type === "stock"} />
         </div>
         <div className="flex items-end">
-          <Button variant="outline" className="w-full" disabled={type === "stock"} onClick={() => { setFrom(monthAgo); setTo(today); }}>Reset</Button>
+          <Button variant="outline" className="w-full" disabled={type === "stock"} onClick={() => { setFrom(monthAgo); setTo(today); }}>{t("reset")}</Button>
         </div>
       </Card>
 
       {type !== "stock" && (
         <div className="text-sm text-muted-foreground mb-2">
-          Menampilkan {type === "in" ? inQ.data?.length ?? 0 : outQ.data?.length ?? 0} transaksi · {from} → {to}
+          {t("showing")} {type === "in" ? inQ.data?.length ?? 0 : outQ.data?.length ?? 0} {t("transactions")} · {from} → {to}
         </div>
       )}
 
@@ -150,13 +150,15 @@ function Reports() {
             <thead><tr><Th>{t("date")}</Th><Th>{t("name")}</Th><Th>{t("type")}</Th><Th>{t("quantity")}</Th><Th>{t("hpp")}</Th></tr></thead>
             <tbody>
               {(outQ.data ?? []).length === 0 && <tr><Td colSpan={5} className="text-center text-muted-foreground py-8">{t("no_data")}</Td></tr>}
-              {outQ.data?.map((r: any) => (
+              {outQ.data?.map((r: any) => {
+                const jenisLabel = r.jenis_keluar === "penjualan" ? t("type_sale") : r.jenis_keluar === "internal" ? t("type_internal") : r.jenis_keluar;
+                return (
                 <tr key={r.id}>
                   <Td>{fmtDateTime(r.tanggal_keluar)}</Td><Td>{r.products?.nama_barang}</Td>
-                  <Td className="capitalize">{r.jenis_keluar}</Td><Td className="tabular-nums">{r.jumlah}</Td>
+                  <Td>{jenisLabel}</Td><Td className="tabular-nums">{r.jumlah}</Td>
                   <Td className="tabular-nums">{fmtIDR(r.hpp)}</Td>
                 </tr>
-              ))}
+              );})}
             </tbody>
           </TableShell>
         )}

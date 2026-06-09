@@ -1,5 +1,6 @@
 import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-router";
 import { LayoutDashboard, Package, ArrowDownToLine, ArrowUpFromLine, ClipboardEdit, BarChart3, LogOut, Languages, Boxes, Bell } from "lucide-react";
+import { APP_TAGLINE } from "@/lib/i18n";
 import { useAuth } from "@/lib/auth-context";
 import { useI18n } from "@/lib/i18n";
 import { useState } from "react";
@@ -34,10 +35,12 @@ export function AppShell() {
       )}>
         <div className="p-5 border-b border-sidebar-border">
           <div className="flex items-center gap-2.5">
-            <div className="size-10 rounded-xl bg-primary text-primary-foreground grid place-items-center font-bold shadow-sm">SI</div>
+            <div className="size-10 rounded-xl bg-primary text-primary-foreground grid place-items-center shadow-sm">
+              <Boxes className="size-5" />
+            </div>
             <div>
               <div className="font-bold text-sidebar-foreground tracking-tight">{t("app_name")}</div>
-              <div className="text-[11px] text-muted-foreground leading-tight">{t("app_tagline")}</div>
+              <div className="text-[11px] text-muted-foreground leading-tight">{APP_TAGLINE}</div>
             </div>
           </div>
         </div>

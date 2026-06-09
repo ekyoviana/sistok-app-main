@@ -10,7 +10,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_authenticated/adjustments")({ component: Adj });
 
 function Adj() {
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const qc = useQueryClient();
   const [form, setForm] = useState({ product_id: "", jenis: "kerusakan", jumlah: -1, keterangan: "" });
 
@@ -19,13 +19,30 @@ function Adj() {
 
   const mut = useMutation({
     mutationFn: async () => {
-      if (!form.product_id) throw new Error("Pilih barang");
+      if (!form.product_id) throw new Error(t("pick_product_first"));
       const { error } = await supabase.rpc("fn_penyesuaian", { p_product_id: form.product_id, p_jenis: form.jenis, p_jumlah: form.jumlah, p_keterangan: form.keterangan });
       if (error) throw error;
     },
     onSuccess: () => { toast.success(t("success_saved")); setForm({ product_id: "", jenis: "kerusakan", jumlah: -1, keterangan: "" }); qc.invalidateQueries(); },
     onError: (e: any) => toast.error(e.message),
   });
+
+  const adjLabel = (j: string) => {
+    if (j === "kerusakan") return t("adj_damage");
+    if (j === "kehilangan") return t("adj_loss");
+    if (j === "selisih") return t("adj_diff");
+    if (j === "koreksi") return t("adj_correction");
+    return j;
+  };
+
+  const noteLabel = (k: string | null) => {
+    if (!k) return "-";
+    if (lang === "en") {
+      if (k === "Pembatalan barang masuk") return "Stock-in cancellation";
+      if (k === "Pembatalan barang keluar") return "Stock-out cancellation";
+    }
+    return k;
+  };
 
   return (
     <div>
@@ -36,7 +53,7 @@ function Adj() {
           <div><Label>{t("select_product")}</Label>
             <Select required value={form.product_id} onChange={e => setForm({ ...form, product_id: e.target.value })}>
               <option value="">—</option>
-              {products.map((p: any) => <option key={p.id} value={p.id}>{p.kode_barang} · {p.nama_barang} (stok: {p.stok})</option>)}
+              {products.map((p: any) => <option key={p.id} value={p.id}>{p.kode_barang} · {p.nama_barang} ({t("stock_qty").toLowerCase()}: {p.stok})</option>)}
             </Select>
           </div>
           <div><Label>{t("type")}</Label>
@@ -60,9 +77,9 @@ function Adj() {
             <tr key={r.id}>
               <Td>{fmtDateTime(r.created_at)}</Td>
               <Td className="font-medium">{r.products?.nama_barang}</Td>
-              <Td className="capitalize">{r.jenis_penyesuaian}</Td>
+              <Td>{adjLabel(r.jenis_penyesuaian)}</Td>
               <Td className={`tabular-nums ${r.jumlah < 0 ? "text-destructive" : "text-success"}`}>{r.jumlah > 0 ? "+" : ""}{r.jumlah}</Td>
-              <Td className="text-sm text-muted-foreground">{r.keterangan || "-"}</Td>
+              <Td className="text-sm text-muted-foreground">{noteLabel(r.keterangan)}</Td>
             </tr>
           ))}
         </tbody>
