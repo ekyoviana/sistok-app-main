@@ -28,7 +28,7 @@ function AuthPage() {
     navigate({ to: "/dashboard" });
   };
 
-  const fillDemo = (e: string) => { setEmail(e); setPwd("demo1234"); };
+  
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-background">
