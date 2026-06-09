@@ -28,7 +28,7 @@ function AuthPage() {
     navigate({ to: "/dashboard" });
   };
 
-  const fillDemo = (e: string) => { setEmail(e); setPwd("demo1234"); };
+  
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2 bg-background">
@@ -47,13 +47,14 @@ function AuthPage() {
         </div>
         <div className="relative">
           <h2 className="text-4xl font-bold leading-tight tracking-tight">
-            Kelola stok gudang Anda<br />dengan presisi & FIFO.
+            Aplikasi Stok Barang<br />untuk Meningkatkan<br />Pengelolaan Persediaan UMKM
           </h2>
           <p className="mt-4 text-primary-foreground/80 max-w-md">
             Pantau barang masuk, keluar, penyesuaian, dan kadaluarsa dalam satu dasbor yang bersih.
           </p>
         </div>
-        <div className="relative text-xs opacity-70">© {new Date().getFullYear()} SIPB · Tugas ADS</div>
+        <div className="relative text-xs opacity-70">© {new Date().getFullYear()} SIStok · Tugas ADS</div>
+
       </div>
 
       {/* Form panel */}
@@ -91,21 +92,6 @@ function AuthPage() {
             {loading ? "..." : t("login_btn")}
           </button>
 
-          <div className="rounded-xl border bg-muted/40 p-3 space-y-1.5">
-            <div className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">Akun Demo</div>
-            {[
-              { e: "admin@demo.com", r: t("role_admin") },
-              { e: "gudang@demo.com", r: t("role_gudang") },
-              { e: "kasir@demo.com", r: t("role_kasir") },
-            ].map(d => (
-              <button type="button" key={d.e} onClick={() => fillDemo(d.e)}
-                className="w-full text-left text-xs flex items-center justify-between px-2 py-1.5 rounded hover:bg-background transition">
-                <span className="font-mono">{d.e}</span>
-                <span className="text-muted-foreground">{d.r}</span>
-              </button>
-            ))}
-            <div className="text-[11px] text-muted-foreground pt-1">Password: <span className="font-mono">demo1234</span></div>
-          </div>
         </form>
       </div>
     </div>

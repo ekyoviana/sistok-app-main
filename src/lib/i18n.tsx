@@ -2,9 +2,10 @@ import { createContext, useContext, useEffect, useState, type ReactNode } from "
 
 const dict = {
   id: {
-    app_name: "SIPB",
-    app_tagline: "Sistem Informasi Persediaan Barang",
+    app_name: "SIStok",
+    app_tagline: "Sistem Pengelolaan Stok",
     login: "Masuk",
+
     logout: "Keluar",
     email: "Email",
     password: "Kata Sandi",
@@ -75,11 +76,20 @@ const dict = {
     hpp: "HPP",
     select_product: "Pilih barang",
     summary: "Ringkasan",
+    view_more: "Lihat selengkapnya",
+    incoming_subtitle: "FIFO batch otomatis tercatat",
+    outgoing_subtitle: "HPP dihitung otomatis dengan FIFO",
+    adjustments_subtitle: "Gunakan angka negatif untuk pengurangan stok",
+    stock_subtitle: "Snapshot stok saat ini",
+    stock_value: "Nilai Stok",
+    value: "Nilai",
   },
+
   en: {
-    app_name: "SIPB",
-    app_tagline: "Inventory Information System",
+    app_name: "SIStok",
+    app_tagline: "Stock Management System",
     login: "Sign In",
+
     logout: "Sign Out",
     email: "Email",
     password: "Password",
@@ -150,7 +160,15 @@ const dict = {
     hpp: "COGS",
     select_product: "Select product",
     summary: "Summary",
+    view_more: "View more",
+    incoming_subtitle: "FIFO batches auto-recorded",
+    outgoing_subtitle: "COGS calculated automatically with FIFO",
+    adjustments_subtitle: "Use negative numbers to reduce stock",
+    stock_subtitle: "Current stock snapshot",
+    stock_value: "Stock Value",
+    value: "Value",
   },
+
 } as const;
 
 type Lang = keyof typeof dict;
