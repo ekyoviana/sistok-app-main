@@ -47,13 +47,14 @@ function AuthPage() {
         </div>
         <div className="relative">
           <h2 className="text-4xl font-bold leading-tight tracking-tight">
-            Kelola stok gudang Anda<br />dengan presisi & FIFO.
+            Aplikasi Stok Barang<br />untuk Meningkatkan<br />Pengelolaan Persediaan UMKM
           </h2>
           <p className="mt-4 text-primary-foreground/80 max-w-md">
             Pantau barang masuk, keluar, penyesuaian, dan kadaluarsa dalam satu dasbor yang bersih.
           </p>
         </div>
-        <div className="relative text-xs opacity-70">© {new Date().getFullYear()} SIPB · Tugas ADS</div>
+        <div className="relative text-xs opacity-70">© {new Date().getFullYear()} SIStok · Tugas ADS</div>
+
       </div>
 
       {/* Form panel */}
