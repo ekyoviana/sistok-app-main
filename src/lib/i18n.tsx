@@ -220,6 +220,13 @@ const dict = {
     adj_diff: "Difference",
     type_sale: "Sale",
     type_internal: "Internal",
+    report_pnl: "Profit & Loss Report",
+    revenue: "Revenue",
+    cogs: "COGS",
+    gross_profit: "Gross Profit",
+    gross_margin: "Gross Margin",
+    pnl_note: "Revenue is computed as units sold × current sell price. COGS is calculated automatically with FIFO at the time of sale.",
+    sales_only: "Sales only",
   },
 
 } as const;
