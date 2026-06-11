@@ -42,10 +42,17 @@ export function BarcodeScanner({ open, onClose, onDetected }: { open: boolean; o
       try { scanner.clear(); } catch {}
     };
 
+    const qrboxFn = (vw: number, vh: number) => {
+      const minEdge = Math.min(vw, vh);
+      const w = Math.floor(Math.min(vw * 0.9, 420));
+      const h = Math.floor(Math.min(minEdge * 0.6, 220));
+      return { width: w, height: h };
+    };
+
     scanner
       .start(
         { facingMode: "environment" },
-        { fps: 10, qrbox: { width: 260, height: 160 } },
+        { fps: 15, qrbox: qrboxFn, aspectRatio: 1.7777, disableFlip: false, experimentalFeatures: { useBarCodeDetectorIfSupported: true } } as any,
         (decoded) => {
           if (detectedRef.current) return;
           detectedRef.current = true;
