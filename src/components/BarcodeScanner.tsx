@@ -8,6 +8,10 @@ export function BarcodeScanner({ open, onClose, onDetected }: { open: boolean; o
   const ref = useRef<HTMLDivElement>(null);
   const scannerRef = useRef<Html5Qrcode | null>(null);
   const detectedRef = useRef(false);
+  const onDetectedRef = useRef(onDetected);
+  const onCloseRef = useRef(onClose);
+  useEffect(() => { onDetectedRef.current = onDetected; }, [onDetected]);
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
 
   useEffect(() => {
     if (!open || !ref.current) return;
@@ -45,9 +49,10 @@ export function BarcodeScanner({ open, onClose, onDetected }: { open: boolean; o
         (decoded) => {
           if (detectedRef.current) return;
           detectedRef.current = true;
+          const text = (decoded ?? "").trim();
           stopAndClear().finally(() => {
-            onDetected(decoded);
-            onClose();
+            onDetectedRef.current(text);
+            onCloseRef.current();
           });
         },
         () => {},
@@ -60,7 +65,7 @@ export function BarcodeScanner({ open, onClose, onDetected }: { open: boolean; o
       detectedRef.current = true;
       stopAndClear();
     };
-  }, [open, onClose, onDetected]);
+  }, [open]);
 
   if (!open) return null;
   return (

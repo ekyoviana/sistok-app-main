@@ -45,11 +45,17 @@ function Outgoing() {
   });
 
   const handleScan = (code?: string) => {
-    const value = (code ?? scan).trim();
-    if (!value) return;
-    const p = products.find((x: any) => x.barcode === value || x.kode_barang === value);
+    const raw = (code ?? scan).trim();
+    if (!raw) return;
+    const norm = (s: string) => s.trim().replace(/^0+/, "").toLowerCase();
+    const v = norm(raw);
+    const p = products.find((x: any) => {
+      const b = (x.barcode ?? "").toString();
+      const k = (x.kode_barang ?? "").toString();
+      return b.trim() === raw || k.trim() === raw || (b && norm(b) === v) || (k && norm(k) === v);
+    });
     if (p) { setForm(f => ({ ...f, product_id: p.id })); toast.success(`${p.nama_barang} (${t("stock_qty").toLowerCase()}: ${p.stok})`); }
-    else toast.error(`${t("barcode_not_found")}: ${value}`);
+    else toast.error(`${t("barcode_not_found")}: ${raw}`);
     setScan("");
   };
 
