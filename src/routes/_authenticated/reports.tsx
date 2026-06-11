@@ -103,6 +103,7 @@ function Reports() {
             <option value="stock">{t("report_stock")}</option>
             <option value="in">{t("report_in")}</option>
             <option value="out">{t("report_out")}</option>
+            <option value="pnl">{t("report_pnl")}</option>
           </Select>
         </div>
         <div>
@@ -118,7 +119,7 @@ function Reports() {
         </div>
       </Card>
 
-      {type !== "stock" && (
+      {type !== "stock" && type !== "pnl" && (
         <div className="text-sm text-muted-foreground mb-2">
           {t("showing")} {type === "in" ? inQ.data?.length ?? 0 : outQ.data?.length ?? 0} {t("transactions")} · {from} → {to}
         </div>
