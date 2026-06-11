@@ -106,6 +106,13 @@ const dict = {
     adj_diff: "Selisih",
     type_sale: "Penjualan",
     type_internal: "Internal",
+    report_pnl: "Laporan Laba Rugi",
+    revenue: "Pendapatan",
+    cogs: "HPP (Beban Pokok)",
+    gross_profit: "Laba Kotor",
+    gross_margin: "Margin Kotor",
+    pnl_note: "Pendapatan dihitung dari jumlah terjual × harga jual saat ini. HPP dihitung otomatis dengan metode FIFO saat barang keluar.",
+    sales_only: "Hanya penjualan",
   },
 
   en: {
