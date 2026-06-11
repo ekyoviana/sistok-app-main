@@ -18,7 +18,7 @@ function Reports() {
   const monthAgo = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
   const [from, setFrom] = useState(monthAgo);
   const [to, setTo] = useState(today);
-  const [type, setType] = useState<"stock" | "in" | "out">("stock");
+  const [type, setType] = useState<"stock" | "in" | "out" | "pnl">("stock");
 
   const fromISO = useMemo(() => dayStart(from), [from]);
   const toISO = useMemo(() => dayEnd(to), [to]);
