@@ -18,7 +18,7 @@ function Reports() {
   const monthAgo = new Date(Date.now() - 30 * 86400000).toISOString().slice(0, 10);
   const [from, setFrom] = useState(monthAgo);
   const [to, setTo] = useState(today);
-  const [type, setType] = useState<"stock" | "in" | "out">("stock");
+  const [type, setType] = useState<"stock" | "in" | "out" | "pnl">("stock");
 
   const fromISO = useMemo(() => dayStart(from), [from]);
   const toISO = useMemo(() => dayEnd(to), [to]);
@@ -42,11 +42,20 @@ function Reports() {
     queryFn: async () =>
       (await supabase
         .from("outgoing_goods")
-        .select("*, products(nama_barang, kode_barang)")
+        .select("*, products(nama_barang, kode_barang, harga_jual)")
         .gte("tanggal_keluar", fromISO)
         .lte("tanggal_keluar", toISO)
         .order("tanggal_keluar", { ascending: false })).data ?? [],
   });
+
+  const pnlRows = (outQ.data ?? []).filter((r: any) => r.jenis_keluar === "penjualan").map((r: any) => {
+    const price = Number(r.products?.harga_jual ?? 0);
+    const revenue = r.jumlah * price;
+    const cogs = Number(r.hpp ?? 0);
+    return { ...r, _price: price, _revenue: revenue, _cogs: cogs, _profit: revenue - cogs };
+  });
+  const pnlTotals = pnlRows.reduce((a: any, r: any) => ({ revenue: a.revenue + r._revenue, cogs: a.cogs + r._cogs, profit: a.profit + r._profit }), { revenue: 0, cogs: 0, profit: 0 });
+  const margin = pnlTotals.revenue > 0 ? (pnlTotals.profit / pnlTotals.revenue) * 100 : 0;
 
   const products = stockQ.data ?? [];
   const totalStock = products.reduce((s: number, p: any) => s + (p.stok || 0), 0);
@@ -94,6 +103,7 @@ function Reports() {
             <option value="stock">{t("report_stock")}</option>
             <option value="in">{t("report_in")}</option>
             <option value="out">{t("report_out")}</option>
+            <option value="pnl">{t("report_pnl")}</option>
           </Select>
         </div>
         <div>
@@ -109,7 +119,7 @@ function Reports() {
         </div>
       </Card>
 
-      {type !== "stock" && (
+      {type !== "stock" && type !== "pnl" && (
         <div className="text-sm text-muted-foreground mb-2">
           {t("showing")} {type === "in" ? inQ.data?.length ?? 0 : outQ.data?.length ?? 0} {t("transactions")} · {from} → {to}
         </div>
@@ -161,6 +171,42 @@ function Reports() {
               );})}
             </tbody>
           </TableShell>
+        )}
+        {type === "pnl" && (
+          <div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+              <StatCard label={t("revenue")} value={fmtIDR(pnlTotals.revenue)} accent="primary" icon={<Receipt className="size-5" />} />
+              <StatCard label={t("cogs")} value={fmtIDR(pnlTotals.cogs)} accent="warning" icon={<Package className="size-5" />} />
+              <StatCard label={t("gross_profit")} value={fmtIDR(pnlTotals.profit)} accent={pnlTotals.profit >= 0 ? "success" : "destructive"} icon={<Boxes className="size-5" />} />
+              <StatCard label={t("gross_margin")} value={`${margin.toFixed(1)}%`} accent="primary" icon={<AlertTriangle className="size-5" />} />
+            </div>
+            <div className="text-xs text-muted-foreground mb-2">{t("pnl_note")} · {t("sales_only")} · {from} → {to}</div>
+            <TableShell>
+              <thead><tr><Th>{t("date")}</Th><Th>{t("name")}</Th><Th>{t("quantity")}</Th><Th>{t("price")}</Th><Th>{t("revenue")}</Th><Th>{t("cogs")}</Th><Th>{t("gross_profit")}</Th></tr></thead>
+              <tbody>
+                {pnlRows.length === 0 && <tr><Td colSpan={7} className="text-center text-muted-foreground py-8">{t("no_data")}</Td></tr>}
+                {pnlRows.map((r: any) => (
+                  <tr key={r.id}>
+                    <Td>{fmtDateTime(r.tanggal_keluar)}</Td>
+                    <Td>{r.products?.nama_barang}</Td>
+                    <Td className="tabular-nums">{r.jumlah}</Td>
+                    <Td className="tabular-nums">{fmtIDR(r._price)}</Td>
+                    <Td className="tabular-nums">{fmtIDR(r._revenue)}</Td>
+                    <Td className="tabular-nums">{fmtIDR(r._cogs)}</Td>
+                    <Td className={`tabular-nums font-semibold ${r._profit >= 0 ? "" : "text-destructive"}`}>{fmtIDR(r._profit)}</Td>
+                  </tr>
+                ))}
+                {pnlRows.length > 0 && (
+                  <tr className="font-semibold bg-muted/30">
+                    <Td colSpan={4} className="text-right">Total</Td>
+                    <Td className="tabular-nums">{fmtIDR(pnlTotals.revenue)}</Td>
+                    <Td className="tabular-nums">{fmtIDR(pnlTotals.cogs)}</Td>
+                    <Td className={`tabular-nums ${pnlTotals.profit >= 0 ? "" : "text-destructive"}`}>{fmtIDR(pnlTotals.profit)}</Td>
+                  </tr>
+                )}
+              </tbody>
+            </TableShell>
+          </div>
         )}
       </div>
     </div>

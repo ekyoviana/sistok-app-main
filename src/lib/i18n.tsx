@@ -106,6 +106,13 @@ const dict = {
     adj_diff: "Selisih",
     type_sale: "Penjualan",
     type_internal: "Internal",
+    report_pnl: "Laporan Laba Rugi",
+    revenue: "Pendapatan",
+    cogs: "HPP (Beban Pokok)",
+    gross_profit: "Laba Kotor",
+    gross_margin: "Margin Kotor",
+    pnl_note: "Pendapatan dihitung dari jumlah terjual × harga jual saat ini. HPP dihitung otomatis dengan metode FIFO saat barang keluar.",
+    sales_only: "Hanya penjualan",
   },
 
   en: {
@@ -213,6 +220,13 @@ const dict = {
     adj_diff: "Difference",
     type_sale: "Sale",
     type_internal: "Internal",
+    report_pnl: "Profit & Loss Report",
+    revenue: "Revenue",
+    cogs: "COGS",
+    gross_profit: "Gross Profit",
+    gross_margin: "Gross Margin",
+    pnl_note: "Revenue is computed as units sold × current sell price. COGS is calculated automatically with FIFO at the time of sale.",
+    sales_only: "Sales only",
   },
 
 } as const;
