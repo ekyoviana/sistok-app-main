@@ -42,11 +42,20 @@ function Reports() {
     queryFn: async () =>
       (await supabase
         .from("outgoing_goods")
-        .select("*, products(nama_barang, kode_barang)")
+        .select("*, products(nama_barang, kode_barang, harga_jual)")
         .gte("tanggal_keluar", fromISO)
         .lte("tanggal_keluar", toISO)
         .order("tanggal_keluar", { ascending: false })).data ?? [],
   });
+
+  const pnlRows = (outQ.data ?? []).filter((r: any) => r.jenis_keluar === "penjualan").map((r: any) => {
+    const price = Number(r.products?.harga_jual ?? 0);
+    const revenue = r.jumlah * price;
+    const cogs = Number(r.hpp ?? 0);
+    return { ...r, _price: price, _revenue: revenue, _cogs: cogs, _profit: revenue - cogs };
+  });
+  const pnlTotals = pnlRows.reduce((a: any, r: any) => ({ revenue: a.revenue + r._revenue, cogs: a.cogs + r._cogs, profit: a.profit + r._profit }), { revenue: 0, cogs: 0, profit: 0 });
+  const margin = pnlTotals.revenue > 0 ? (pnlTotals.profit / pnlTotals.revenue) * 100 : 0;
 
   const products = stockQ.data ?? [];
   const totalStock = products.reduce((s: number, p: any) => s + (p.stok || 0), 0);
