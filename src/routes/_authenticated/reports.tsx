@@ -172,6 +172,42 @@ function Reports() {
             </tbody>
           </TableShell>
         )}
+        {type === "pnl" && (
+          <div>
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-3 mb-4">
+              <StatCard label={t("revenue")} value={fmtIDR(pnlTotals.revenue)} accent="primary" icon={<Receipt className="size-5" />} />
+              <StatCard label={t("cogs")} value={fmtIDR(pnlTotals.cogs)} accent="warning" icon={<Package className="size-5" />} />
+              <StatCard label={t("gross_profit")} value={fmtIDR(pnlTotals.profit)} accent={pnlTotals.profit >= 0 ? "success" : "destructive"} icon={<Boxes className="size-5" />} />
+              <StatCard label={t("gross_margin")} value={`${margin.toFixed(1)}%`} accent="primary" icon={<AlertTriangle className="size-5" />} />
+            </div>
+            <div className="text-xs text-muted-foreground mb-2">{t("pnl_note")} · {t("sales_only")} · {from} → {to}</div>
+            <TableShell>
+              <thead><tr><Th>{t("date")}</Th><Th>{t("name")}</Th><Th>{t("quantity")}</Th><Th>{t("price")}</Th><Th>{t("revenue")}</Th><Th>{t("cogs")}</Th><Th>{t("gross_profit")}</Th></tr></thead>
+              <tbody>
+                {pnlRows.length === 0 && <tr><Td colSpan={7} className="text-center text-muted-foreground py-8">{t("no_data")}</Td></tr>}
+                {pnlRows.map((r: any) => (
+                  <tr key={r.id}>
+                    <Td>{fmtDateTime(r.tanggal_keluar)}</Td>
+                    <Td>{r.products?.nama_barang}</Td>
+                    <Td className="tabular-nums">{r.jumlah}</Td>
+                    <Td className="tabular-nums">{fmtIDR(r._price)}</Td>
+                    <Td className="tabular-nums">{fmtIDR(r._revenue)}</Td>
+                    <Td className="tabular-nums">{fmtIDR(r._cogs)}</Td>
+                    <Td className={`tabular-nums font-semibold ${r._profit >= 0 ? "" : "text-destructive"}`}>{fmtIDR(r._profit)}</Td>
+                  </tr>
+                ))}
+                {pnlRows.length > 0 && (
+                  <tr className="font-semibold bg-muted/30">
+                    <Td colSpan={4} className="text-right">Total</Td>
+                    <Td className="tabular-nums">{fmtIDR(pnlTotals.revenue)}</Td>
+                    <Td className="tabular-nums">{fmtIDR(pnlTotals.cogs)}</Td>
+                    <Td className={`tabular-nums ${pnlTotals.profit >= 0 ? "" : "text-destructive"}`}>{fmtIDR(pnlTotals.profit)}</Td>
+                  </tr>
+                )}
+              </tbody>
+            </TableShell>
+          </div>
+        )}
       </div>
     </div>
   );
